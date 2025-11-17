@@ -280,8 +280,8 @@
             <div class="login-container">
                 <div class="login-form">
                     <div class="intro-text">
-                        <p class="highlight">배드민턴 퀴즈 도전!</p>
-                        <p>총 10문제, 100점 만점으로 여러분의 배드민턴 실력을 테스트해보세요.</p>
+                        <p class="highlight">컴퓨터 퀴즈 도전!</p>
+                        <p>총 10문제, 100점 만점으로 여러분의 다양한 컴퓨터 지식식을 테스트해보세요.</p>
                         <p>규칙부터 기술까지 다양한 분야에서 출제됩니다.</p>
                     </div>
 
@@ -359,26 +359,98 @@
 <script>
 /* 기존 JS 그대로 유지 */
 const questionPool = {
-    easy: [
-        { question: "배드민턴은 한 세트당 몇점인가요?", options: ["20", "18", "25", "21"], correct: 3, difficulty: "easy" },
-        { question: "배드민턴은 복식만 존재한다?", options: ["X", "O", "모른다", "사랑해요"], correct: 0, difficulty: "easy" },
-        { question: "배드민턴 전용 신발이 존재한다?", options: ["예", "아니요", "내가 발명하자", "쓸데없다"], correct: 0, difficulty: "easy" },
-        { question: "가장 빠른 구기 종목이다?", options: ["예", "설마", "아니요", "느린 종목이다"], correct: 0, difficulty: "easy" },
-        { question: "배드민턴 그립의 종류는 2개다?", options: ["아니요", "예", "모르겠다", "궁금하다"], correct: 0, difficulty: "easy" },
-        { question: "배드민턴은 복식이랑 단식 일때 코트가 바뀐다?", options: ["모른다", "예", "아니요", "궁금하다"], correct: 1, difficulty: "easy" },
-        { question: "다음 중 틀린 것은?", options: ["배드민턴은 우리나라 전통놀이이다", "배드민턴은 채로 하는 스포츠다", "배드민턴의 공 이름은 셔틀콕이다", "남녀노소 모두 즐긴다"], correct: 0, difficulty: "easy" },
-        { question: "배드민턴의 줄은 바꿀 수 있다?", options: ["예", "아니요", "모른다", "궁금하다"], correct: 0, difficulty: "easy" },
-    ],
-    medium: [
-        { question: "다음중 공을 살짝 쳐서 코트에 낮게 넘기는 것은?", options: ["헤어핀", "클리어", "스매시", "하이클리어"], correct: 0, difficulty: "medium" },
-        { question: "가장 기본이 되는 그립은?", options: ["백핸드", "모른다", "포핸드", "투핸드"], correct: 2, difficulty: "medium" },
-        { question: "셔틀콕의 최고 속력은?", options: ["시속 100km", "시속 200km", "광속", "300km 이상"], correct: 3, difficulty: "medium" },
-        { question: "다음중 배드민턴 브랜드는?", options: ["샤오밍", "애플", "가라이다", "배드민턴"], correct: 3, difficulty: "medium" },
-    ],
-    hard: [
-        { question: "현재 세계 1위 여자 단식 선수는?", options: ["왕지이", "둔중", "안세영", "미야자키토모카"], correct: 1, difficulty: "hard" },
-        { question: "배드민턴 그립을 감기 전에 감는 것은?", options: ["수건", "종이", "플라스틱", "뮬러"], correct: 3, difficulty: "hard" },
-    ]
+easy: [
+    { 
+        question: "HTML은 어떤 종류의 언어인가요?", 
+        options: ["마크업 언어", "프로그래밍 언어", "데이터베이스 언어", "운영체제 언어"], 
+        correct: 0, 
+        difficulty: "easy" 
+    },
+    { 
+        question: "다음 중 프로그래밍 언어가 아닌 것은?", 
+        options: ["Python", "Java", "HTML", "C"], 
+        correct: 2, 
+        difficulty: "easy" 
+    },
+    { 
+        question: "CSS의 역할은 무엇인가요?", 
+        options: ["문서 구조 정의", "스타일 및 디자인 적용", "데이터 저장", "운영체제 동작"], 
+        correct: 1, 
+        difficulty: "easy" 
+    },
+    { 
+        question: "Python 파일의 확장자는 무엇인가요?", 
+        options: [".exe", ".py", ".java", ".html"], 
+        correct: 1, 
+        difficulty: "easy" 
+    },
+    { 
+        question: "다음 중 컴퓨터에서 '코드'라고 부르는 것은?", 
+        options: ["그림 파일", "프로그램 명령문", "음악 파일", "영상 파일"], 
+        correct: 1, 
+        difficulty: "easy" 
+    },
+    { 
+        question: "다음 중 마크업 언어는?", 
+        options: ["HTML", "Python", "C++", "JavaScript"], 
+        correct: 0, 
+        difficulty: "easy" 
+    },
+    { 
+        question: "다음 중 웹사이트의 디자인을 담당하는 것은?", 
+        options: ["CSS", "CPU", "SQL", "SSD"], 
+        correct: 0, 
+        difficulty: "easy" 
+    },
+    { 
+        question: "다음 중 '스크립트 언어'는 무엇인가요?", 
+        options: ["JavaScript", "C", "Java", "C++"], 
+        correct: 0, 
+        difficulty: "easy" 
+    },
+],
+
+medium: [
+    { 
+        question: "JavaScript에서 조건문을 만들 때 사용하는 키워드는?", 
+        options: ["if", "for", "def", "print"], 
+        correct: 0, 
+        difficulty: "medium" 
+    },
+    { 
+        question: "Python에서 리스트의 길이를 구하는 함수는?", 
+        options: ["size()", "length()", "len()", "count()"], 
+        correct: 2, 
+        difficulty: "medium" 
+    },
+    { 
+        question: "다음 중 객체지향 언어(OOP)인 것은?", 
+        options: ["HTML", "SQL", "Python", "CSS"], 
+        correct: 2, 
+        difficulty: "medium" 
+    },
+    { 
+        question: "다음 중 데이터베이스 질의(Query)를 위한 언어는?", 
+        options: ["Java", "HTML", "Python", "SQL"], 
+        correct: 3, 
+        difficulty: "medium" 
+    },
+],
+
+hard: [
+    { 
+        question: "C 언어에서 포인터(pointer)가 의미하는 것은?", 
+        options: ["문자의 집합", "메모리 주소를 저장하는 변수", "반복문", "주석 처리 방식"], 
+        correct: 1, 
+        difficulty: "hard" 
+    },
+    { 
+        question: "JavaScript에서 비동기 작업을 처리하기 위한 문법은?", 
+        options: ["async/await", "import/export", "class/object", "public/private"], 
+        correct: 0, 
+        difficulty: "hard" 
+    },
+]
 };
 
 let questions = [];
