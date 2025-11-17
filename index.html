@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고등학생 상식 퀴즈</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background: #e7e9ef url('https://i.imgur.com/9eOwKpU.png');
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            position: relative;
+        }
+
+        /* 전체 컨테이너: 공책 종이 느낌 */
+        .quiz-container {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #cfd2d8;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            padding: 35px 25px;
+            max-width: 780px;
+            width: 100%;
+            animation: fadeIn 0.4s ease;
+            position: relative;
+        }
+
+        /* 연한 수평선(노트 선 느낌) */
+        .quiz-container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent 36px,
+                rgba(0, 95, 204, 0.06) 37px
+            );
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            font-weight: 800;
+            color: #2e3a59;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #2e3a59;
+            margin-bottom: 25px;
+        }
+
+        /* 로그인 박스 */
+        .login-form {
+            background: #fafbff;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #d9dde7;
+        }
+
+        /* 인트로 설명 글 */
+        .intro-text {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #444;
+        }
+
+        .intro-text .highlight {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2e3a59;
+        }
+
+        /* 입력 박스 */
+        .input-group label {
+            font-weight: bold;
+            color: #2e3a59;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ced2db;
+            border-radius: 8px;
+            font-size: 1em;
+            background: #fff;
+            transition: 0.2s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #2e3a59;
+            outline: none;
+        }
+
+        /* 점수판 */
+        .score-board {
+            background: #2e3a59;
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        /* 난이도 표시 */
+        .difficulty-indicator {
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+
+        .easy { background: #bedff6; color: #13466a; }
+        .medium { background: #ffe29c; color: #5c4200; }
+        .hard { background: #f8b2b2; color: #6d0000; }
+
+        /* 문제 영역 */
+        .question {
+            padding: 20px;
+            border-left: 4px solid #2e3a59;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #f7f8fa;
+            font-weight: bold;
+            color: #2e3a59;
+        }
+
+        /* 선택지 */
+        .options { display: grid; gap: 12px; }
+
+        .option {
+            background: #fff;
+            padding: 15px 20px;
+            border: 1px solid #d1d5df;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .option:hover {
+            background: #eef2f9;
+        }
+
+        .option.correct {
+            background: #d9f7d9;
+            border-color: #4caf50;
+        }
+
+        .option.wrong {
+            background: #f8d0d0;
+            border-color: #d73737;
+        }
+
+        /* 버튼 */
+        .btn {
+            background: #2e3a59;
+            color: #fff;
+            padding: 13px 25px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #3e4c6b;
+        }
+
+        /* 프로그레스 바 */
+        .progress-bar {
+            background: #d5d9e4;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 18px;
+        }
+
+        .progress {
+            background: #2e3a59;
+            width: 0%;
+            height: 100%;
+            border-radius: 5px;
+            transition: 0.4s;
+        }
+
+        /* 결과 화면 */
+        .result-title {
+            font-size: 2em;
+            font-weight: 800;
+            color: #2e3a59;
+            margin-bottom: 10px;
+        }
+
+        .final-score {
+            font-size: 3em;
+            font-weight: 900;
+            color: #2e3a59;
+            margin-bottom: 15px;
+        }
+
+        .user-info {
+            background: #eef0f6;
+            padding: 15px;
+            border-radius: 10px;
+            color: #2e3a59;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* 통계 박스 */
+        .stats-container {
+            background: #fafbff;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #d4d7e0;
+            margin: 20px 0;
+        }
+
+        .stats-title {
+            text-align: center;
+            font-weight: bold;
+            color: #2e3a59;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #d4d7e0;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 캡처 안내 */
+        .capture-notice {
+            background: #ffe29c;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            color: #6a4a0f;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+
+<body>
+    <div class="quiz-container">
+        <h1>🧠 고등학생 상식 퀴즈</h1>
+
+        <div id="login-screen">
+            <div class="login-container">
+                <div class="login-form">
+                    <div class="intro-text">
+                        <p class="highlight">배드민턴 퀴즈 도전!</p>
+                        <p>총 10문제, 100점 만점으로 여러분의 배드민턴 실력을 테스트해보세요.</p>
+                        <p>규칙부터 기술까지 다양한 분야에서 출제됩니다.</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label>📝 학번</label>
+                        <input type="text" id="student-id" placeholder="예: 10101">
+                    </div>
+
+                    <div class="input-group">
+                        <label>👤 이름</label>
+                        <input type="text" id="student-name" placeholder="예: 홍길동">
+                    </div>
+
+                    <button class="btn" onclick="startQuiz()">지금 바로 시작하기!</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-content" class="hidden">
+            <div id="quiz-screen">
+                <div class="score-board">
+                    <div>📚 문제: <span id="current-question">1</span> / <span id="total-questions">10</span></div>
+                    <div>⭐ 점수: <span id="current-score">0</span>점</div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+
+                <div class="question-container">
+                    <div class="difficulty-indicator" id="difficulty-indicator"></div>
+                    <div class="question" id="question-text"></div>
+                    <div class="options" id="options-container"></div>
+                </div>
+
+                <button class="btn" id="next-btn" onclick="nextQuestion()" disabled>다음 문제 →</button>
+            </div>
+
+            <div id="result-screen" class="hidden">
+                <div class="result-title">🎉 퀴즈 완료!</div>
+                <div class="user-info" id="user-result-info"></div>
+                <div class="final-score" id="final-score">0점</div>
+                <div class="result-message" id="result-message"></div>
+
+                <div class="stats-container">
+                    <div class="stats-title">📊 이번 게임 결과</div>
+                    <div class="stat-item">
+                        <span>✅ 맞힌 문제</span>
+                        <span id="correct-count">0 / 10</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>⭐ 하 난이도 정답률</span>
+                        <span id="easy-correct">0 / 4</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>⭐⭐ 중 난이도 정답률</span>
+                        <span id="medium-correct">0 / 4</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>⭐⭐⭐ 상 난이도 정답률</span>
+                        <span id="hard-correct">0 / 2</span>
+                    </div>
+                </div>
+
+                <div class="capture-notice">
+                    📸 결과 저장 안내  
+                    <p>• 이 화면을 캡쳐해서 결과를 제출해주세요!</p>
+                </div>
+
+                <button class="btn" onclick="restartQuiz()">🔄 다시 도전하기</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+/* 기존 JS 그대로 유지 */
+const questionPool = {
+    easy: [
+        { question: "배드민턴은 한 세트당 몇점인가요?", options: ["20", "18", "25", "21"], correct: 3, difficulty: "easy" },
+        { question: "배드민턴은 복식만 존재한다?", options: ["X", "O", "모른다", "사랑해요"], correct: 0, difficulty: "easy" },
+        { question: "배드민턴 전용 신발이 존재한다?", options: ["예", "아니요", "내가 발명하자", "쓸데없다"], correct: 0, difficulty: "easy" },
+        { question: "가장 빠른 구기 종목이다?", options: ["예", "설마", "아니요", "느린 종목이다"], correct: 0, difficulty: "easy" },
+        { question: "배드민턴 그립의 종류는 2개다?", options: ["아니요", "예", "모르겠다", "궁금하다"], correct: 0, difficulty: "easy" },
+        { question: "배드민턴은 복식이랑 단식 일때 코트가 바뀐다?", options: ["모른다", "예", "아니요", "궁금하다"], correct: 1, difficulty: "easy" },
+        { question: "다음 중 틀린 것은?", options: ["배드민턴은 우리나라 전통놀이이다", "배드민턴은 채로 하는 스포츠다", "배드민턴의 공 이름은 셔틀콕이다", "남녀노소 모두 즐긴다"], correct: 0, difficulty: "easy" },
+        { question: "배드민턴의 줄은 바꿀 수 있다?", options: ["예", "아니요", "모른다", "궁금하다"], correct: 0, difficulty: "easy" },
+    ],
+    medium: [
+        { question: "다음중 공을 살짝 쳐서 코트에 낮게 넘기는 것은?", options: ["헤어핀", "클리어", "스매시", "하이클리어"], correct: 0, difficulty: "medium" },
+        { question: "가장 기본이 되는 그립은?", options: ["백핸드", "모른다", "포핸드", "투핸드"], correct: 2, difficulty: "medium" },
+        { question: "셔틀콕의 최고 속력은?", options: ["시속 100km", "시속 200km", "광속", "300km 이상"], correct: 3, difficulty: "medium" },
+        { question: "다음중 배드민턴 브랜드는?", options: ["샤오밍", "애플", "가라이다", "배드민턴"], correct: 3, difficulty: "medium" },
+    ],
+    hard: [
+        { question: "현재 세계 1위 여자 단식 선수는?", options: ["왕지이", "둔중", "안세영", "미야자키토모카"], correct: 1, difficulty: "hard" },
+        { question: "배드민턴 그립을 감기 전에 감는 것은?", options: ["수건", "종이", "플라스틱", "뮬러"], correct: 3, difficulty: "hard" },
+    ]
+};
+
+let questions = [];
+let currentQuestion = 0;
+let score = 0;
+let selectedAnswer = null;
+let currentUser = { name: '', studentId: '' };
+let gameData = {
+    correctAnswers: 0,
+    easyCorrect: 0,
+    mediumCorrect: 0,
+    hardCorrect: 0,
+    answers: []
+};
+
+function startQuiz() {
+    const studentId = document.getElementById('student-id').value.trim();
+    const studentName = document.getElementById('student-name').value.trim();
+
+    if (!studentId || !studentName) {
+        alert('학번과 이름을 모두 입력해주세요!');
+        return;
+    }
+
+    currentUser = { name: studentName, studentId: studentId };
+    currentQuestion = 0;
+    score = 0;
+    selectedAnswer = null;
+
+    gameData = {
+        correctAnswers: 0,
+        easyCorrect: 0,
+        mediumCorrect: 0,
+        hardCorrect: 0,
+        answers: []
+    };
+
+    questions = [];
+    questions.push(...getRandomQuestions(questionPool.easy, 4));
+    questions.push(...getRandomQuestions(questionPool.medium, 4));
+    questions.push(...getRandomQuestions(questionPool.hard, 2));
+
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('main-content').classList.remove('hidden');
+    document.getElementById('quiz-screen').classList.remove('hidden');
+    document.getElementById('result-screen').classList.add('hidden');
+
+    showQuestion();
+}
+
+function getRandomQuestions(pool, count) {
+    const shuffled = [...pool];
+    shuffleArray(shuffled);
+    return shuffled.slice(0, count);
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function showQuestion() {
+    const question = questions[currentQuestion];
+
+    document.getElementById('question-text').textContent = question.question;
+    document.getElementById('current-question').textContent = currentQuestion + 1;
+    document.getElementById('total-questions').textContent = questions.length;
+    document.getElementById('current-score').textContent = score;
+
+    const difficultyIndicator = document.getElementById('difficulty-indicator');
+    if (question.difficulty === 'easy') {
+        difficultyIndicator.textContent = '⭐ 하 난이도 (7점)';
+        difficultyIndicator.className = 'difficulty-indicator easy';
+    } else if (question.difficulty === 'medium') {
+        difficultyIndicator.textContent = '⭐⭐ 중 난이도 (10점)';
+        difficultyIndicator.className = 'difficulty-indicator medium';
+    } else {
+        difficultyIndicator.textContent = '⭐⭐⭐ 상 난이도 (16점)';
+        difficultyIndicator.className = 'difficulty-indicator hard';
+    }
+
+    const progress = ((currentQuestion) / questions.length) * 100;
+    document.getElementById('progress').style.width = progress + '%';
+
+    const optionsContainer = document.getElementById('options-container');
+    optionsContainer.innerHTML = '';
+
+    question.options.forEach((option, index) => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option';
+        optionElement.textContent = option;
+        optionElement.onclick = () => selectAnswer(index);
+        optionsContainer.appendChild(optionElement);
+    });
+
+    document.getElementById('next-btn').disabled = true;
+    selectedAnswer = null;
+}
+
+function selectAnswer(answerIndex) {
+    if (selectedAnswer !== null) return;
+
+    selectedAnswer = answerIndex;
+    const question = questions[currentQuestion];
+    const options = document.querySelectorAll('.option');
+
+    options.forEach((option, index) => {
+        if (index === question.correct) {
+            option.classList.add('correct');
+        } else if (index === answerIndex && answerIndex !== question.correct) {
+            option.classList.add('wrong');
+        }
+        option.style.cursor = 'default';
+    });
+
+    const isCorrect = answerIndex === question.correct;
+    gameData.answers.push({
+        question: currentQuestion,
+        correct: isCorrect,
+        difficulty: question.difficulty
+    });
+
+    if (isCorrect) {
+        gameData.correctAnswers++;
+        if (question.difficulty === 'easy') {
+            score += 7;
+            gameData.easyCorrect++;
+        } else if (question.difficulty === 'medium') {
+            score += 10;
+            gameData.mediumCorrect++;
+        } else {
+            score += 16;
+            gameData.hardCorrect++;
+        }
+        document.getElementById('current-score').textContent = score;
+    }
+
+    document.getElementById('next-btn').disabled = false;
+}
+
+function nextQuestion() {
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById('quiz-screen').classList.add('hidden');
+    document.getElementById('result-screen').classList.remove('hidden');
+
+    document.getElementById('user-result-info').textContent =
+        `${currentUser.studentId} ${currentUser.name}`;
+
+    document.getElementById('final-score').textContent = score + '점';
+
+    const easyTotal = gameData.answers.filter(a => a.difficulty === 'easy').length;
+    const mediumTotal = gameData.answers.filter(a => a.difficulty === 'medium').length;
+    const hardTotal = gameData.answers.filter(a => a.difficulty === 'hard').length;
+
+    document.getElementById('correct-count').textContent = `${gameData.correctAnswers} / 10`;
+    document.getElementById('easy-correct').textContent = `${gameData.easyCorrect} / ${easyTotal}`;
+    document.getElementById('medium-correct').textContent = `${gameData.mediumCorrect} / ${mediumTotal}`;
+    document.getElementById('hard-correct').textContent = `${gameData.hardCorrect} / ${hardTotal}`;
+
+    const maxScore = (4 * 7) + (4 * 10) + (2 * 16);
+    const percentage = (score / maxScore) * 100;
+
+    let message = '';
+    if (percentage >= 90) message = '완벽해요! 진정한 상식 박사네요! 🎓✨';
+    else if (percentage >= 80) message = '훌륭해요! 어려운 문제까지 잘 풀었어요! 👏';
+    else if (percentage >= 70) message = '좋아요! 기본 상식이 탄탄해요! 📚';
+    else if (percentage >= 50) message = '괜찮아요! 조금 더 공부해봐요! 💪';
+    else message = '아쉬워요! 다시 도전해보세요! 🔥';
+
+    document.getElementById('result-message').textContent = message;
+}
+
+function restartQuiz() {
+    document.getElementById('login-screen').classList.remove('hidden');
+    document.getElementById('main-content').classList.add('hidden');
+}
+</script>
+
+</body>
+</html>
